@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -92,8 +93,9 @@ public class ReadXML {
 		boolean newElement = false;
 		int fontSize = 0;
 		
-
 		Element text = docOut.createElement("text");
+		
+		StringBuilder tekst = new StringBuilder();
 		
 
 		for (int count = 0; count < nodeList.getLength(); count++) {
@@ -104,24 +106,8 @@ public class ReadXML {
 			// make sure it's element node.
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 
-				if (tempNode.getNodeName() == "text") {
-					
-					//add value to element and add to tree
-					text.appendChild(docOut.createTextNode(tempNode.getTextContent()));
-					rootElement.appendChild(text);
-
-					// get node name and value
-					System.out.println("\nParent Node Name =" + rootElement.getNodeName() + " [OPEN]");
-					System.out.println("Parent Node Value =" + rootElement.getNodeValue());
-					System.out.println("Children number =" + rootElement.getChildNodes().getLength());
-					System.out.println("Children children number =" + rootElement.getFirstChild().getChildNodes().getLength());
-					System.out.println("Node child value =" + rootElement.getFirstChild().getLastChild().getNodeName());
-					System.out.println("Node child value =" + rootElement.getFirstChild().getLastChild().getNodeValue());
-
-
-					if (tempNode.hasAttributes()) {
+				if (tempNode.getNodeName() == "text" && tempNode.hasAttributes()) {
 						
-
 						// get attributes names and values
 						NamedNodeMap nodeMap = tempNode.getAttributes();
 						
@@ -131,16 +117,47 @@ public class ReadXML {
 							Node node = nodeMap.item(i);
 							
 							//// make sure font attribute.
-							if(tempNode.getNodeName() == "font")
+							if(node.getNodeName() == "font") {
 								
-								if (fontSize != Integer.parseInt(node.getNodeValue()) && fontSize > 0)
+								Attr attr = docOut.createAttribute("font");
+								attr.setValue((node.getNodeValue()));
+								text.setAttributeNode(attr);
+								
+								
+								if (fontSize != Integer.parseInt(node.getNodeValue()))
 								{
-									newElement = true;
+									
+									tekst.append(tempNode.getTextContent());
+									text = docOut.createElement("text");
+									
 								}
+							
+								text.appendChild(docOut.createTextNode(tempNode.getTextContent()));
+								rootElement.appendChild(text);
+							
+							
 							fontSize =  Integer.parseInt(node.getNodeValue());
+							}
+							
+
 							
 						}
-					}
+					
+						
+					//add value to element and add to tree
+//					text.appendChild(docOut.createTextNode(tempNode.getTextContent()));
+//					rootElement.appendChild(text);
+//
+//					// get node name and value
+//					System.out.println("\nParent Node Name =" + rootElement.getNodeName() + " [OPEN]");
+//					System.out.println("Parent Node Value =" + rootElement.getNodeValue());
+//					System.out.println("Children number =" + rootElement.getChildNodes().getLength());
+//					System.out.println("Children children number =" + rootElement.getFirstChild().getChildNodes().getLength());
+//					System.out.println("Node child value =" + rootElement.getFirstChild().getLastChild().getNodeName());
+//					System.out.println("Node child value =" + rootElement.getFirstChild().getLastChild().getNodeValue());
+
+
+
 					
 					
 				}
