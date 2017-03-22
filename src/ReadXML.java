@@ -93,7 +93,7 @@ public class ReadXML {
 		int fontSize = 0;
 		
 
-		Element text = docOut.createElement("text2");
+		Element text = docOut.createElement("text");
 		
 
 		for (int count = 0; count < nodeList.getLength(); count++) {
