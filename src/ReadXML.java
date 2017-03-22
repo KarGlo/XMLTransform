@@ -47,7 +47,7 @@ public class ReadXML {
 
 		try {
 
-			File file = new File("C://Users//glowackk//Documents//page.xml");
+			File file = new File("page.xml");
 
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
@@ -103,10 +103,8 @@ public class ReadXML {
 			Node tempNode = nodeList.item(count);
 			
 
-			// make sure it's element node.
-			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-
-				if (tempNode.getNodeName() == "text" && tempNode.hasAttributes()) {
+			// make sure it's element node with name text and has attibutes
+				if (tempNode.getNodeType() == Node.ELEMENT_NODE && tempNode.getNodeName() == "text" && tempNode.hasAttributes()) {
 						
 						// get attributes names and values
 						NamedNodeMap nodeMap = tempNode.getAttributes();
@@ -171,7 +169,7 @@ public class ReadXML {
 
 //				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
 
-			}
+		
 
 		}
 		
