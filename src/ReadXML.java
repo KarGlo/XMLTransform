@@ -1,9 +1,8 @@
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,9 +20,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 public class ReadXML {
 	
@@ -70,7 +66,7 @@ public class ReadXML {
 			DocumentBuilder dBuilder = dbf.newDocumentBuilder();			
 
 
-			Document docIn = dBuilder.parse(file);
+			Document docIn = dBuilder.parse(stream);
 
 			System.out.println("Root element :" + docIn.getDocumentElement().getNodeName());
 
@@ -88,6 +84,7 @@ public class ReadXML {
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		// write the content into xml file
@@ -120,10 +117,32 @@ public class ReadXML {
 		for (int count = 0; count < nodeList.getLength(); count++) {
 
 			Node tempNode = nodeList.item(count);
+			String tekstTempString = tempNode.getTextContent();
+			
+			String[] regExCollection = { "(©Kancelaria Sejmu.*)", 
+					"(^s.*\\d.*)"};
+			
+			boolean valueContent = true;
+			
+			for (int i = 0; i < regExCollection.length; i++)
+			{
+			
+			Pattern MY_PATTERN = Pattern.compile(regExCollection[i]);
+								
+				if (tekstTempString != null){
+				Matcher m = MY_PATTERN.matcher(tekstTempString);
+				if (m.find())
+					{
+					valueContent = false;
+					}
+				
+				}
+			}
+//			System.out.println(tekstTempString);
 			
 
 			// make sure it's element node with name text and has attibutes
-				if (tempNode.getNodeType() == Node.ELEMENT_NODE && tempNode.getNodeName() == "text" && tempNode.hasAttributes()) {
+				if (tempNode.getNodeType() == Node.ELEMENT_NODE && tempNode.getNodeName() == "text" && tempNode.hasAttributes() && valueContent == true) {
 						
 						// get attributes names and values
 						NamedNodeMap nodeMap = tempNode.getAttributes();
@@ -138,7 +157,7 @@ public class ReadXML {
 								
 								Attr attr = docOut.createAttribute("font");
 								attr.setValue((node.getNodeValue()));
-								text.setAttributeNode(attr);
+								//text.setAttributeNode(attr);
 								
 								
 								if (fontSize != Integer.parseInt(node.getNodeValue()))
