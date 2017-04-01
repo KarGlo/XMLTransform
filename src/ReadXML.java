@@ -120,7 +120,9 @@ public class ReadXML {
 			String tekstTempString = tempNode.getTextContent();
 			
 			String[] regExCollection = { "(©Kancelaria Sejmu.*)", 
-					"(^s.*\\d.*)"};
+					"(^s.*\\d.*)",
+					"(\\d*-\\d*-\\d*.*)"
+					};
 			
 			boolean valueContent = true;
 			
