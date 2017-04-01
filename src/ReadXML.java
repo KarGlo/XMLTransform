@@ -1,4 +1,10 @@
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,6 +21,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class ReadXML {
 	
@@ -43,13 +52,23 @@ public class ReadXML {
 	public static void main(String[] args) throws ParserConfigurationException, TransformerConfigurationException {
 		
 		createDocumentWithRoot();
+		
+	      System.setProperty("java.net.useSystemProxies", "true");
 	   
 
 		try {
+			
 
 			File file = new File("page.xml");
+			
+			URL url = new URL("http://docs.sejmometr.pl/xml/348138.xml");			
+			InputStream stream = url.openStream();
+			
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			
+     		dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			DocumentBuilder dBuilder = dbf.newDocumentBuilder();			
 
-			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
 			Document docIn = dBuilder.parse(file);
 
