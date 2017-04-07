@@ -45,7 +45,7 @@ public class ReadXML {
     }
 
 	
-	public static void main(String[] args) throws ParserConfigurationException, TransformerConfigurationException {
+    public void ReadXMLnow(String urlFile) throws ParserConfigurationException, TransformerConfigurationException {
 		
 		createDocumentWithRoot();
 		
@@ -55,9 +55,9 @@ public class ReadXML {
 		try {
 			
 
-			File file = new File("page.xml");
+//			File file = new File("page.xml");
 			
-			URL url = new URL("http://docs.sejmometr.pl/xml/348138.xml");			
+			URL url = new URL(urlFile);			
 			InputStream stream = url.openStream();
 			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -91,7 +91,7 @@ public class ReadXML {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(docOut);
-		StreamResult result = new StreamResult(new File("file.xml"));
+		StreamResult result = new StreamResult(new File("C:\\Users\\glowackk\\git\\XMLTransform\\file.xml"));
 		
 		try {
 			transformer.transform(source, result);
