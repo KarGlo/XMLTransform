@@ -41,7 +41,7 @@ public class HelloServlet extends HttpServlet {
 		}
         System.out.println("CoSieStaloSie ");		
 		
-		response.getWriter().append("CoSieStaloSie ");
+		response.getWriter().append("<a href=\"UploadDownloadFileServlet?fileName="+newFile.fileName+"\">Download "+newFile.fileName+"</a>");
 	}
 
 	/**

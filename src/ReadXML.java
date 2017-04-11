@@ -27,6 +27,7 @@ public class ReadXML {
 	private static DocumentBuilder docBuilder;
 	private static Document docOut;
 	static Element rootElement;
+	String fileName = null;
     
     static Document createDocumentWithRoot () {
     
@@ -44,6 +45,7 @@ public class ReadXML {
 	}
 	return docOut;
     }
+    
 
 	
     public void ReadXMLnow(String urlFile, HttpServletRequest request) throws ParserConfigurationException, TransformerConfigurationException {
@@ -52,8 +54,8 @@ public class ReadXML {
 		
 	      System.setProperty("java.net.useSystemProxies", "true");
 	      
-	      String fileName = null;
-	   
+	     
+	      
 
 		try {
 			
@@ -65,8 +67,15 @@ public class ReadXML {
 			
 			fileName = url.getFile();
 			
-			System.out.println(url.getFile());
-			
+			//extract only file name
+	        java.util.regex.Pattern p       = java.util.regex.Pattern.compile("^[/\\\\]?(?:.+[/\\\\]+?)?(.+?)[/\\\\]?$");
+	        java.util.regex.Matcher matcher = p.matcher(fileName);
+	        
+	        if ( matcher.find() ) {
+	        fileName = matcher.group(1);
+	        }
+	        
+	        System.out.println(fileName);
 			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			
