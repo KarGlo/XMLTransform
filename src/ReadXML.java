@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -45,11 +46,13 @@ public class ReadXML {
     }
 
 	
-    public void ReadXMLnow(String urlFile) throws ParserConfigurationException, TransformerConfigurationException {
+    public void ReadXMLnow(String urlFile, HttpServletRequest request) throws ParserConfigurationException, TransformerConfigurationException {
 		
 		createDocumentWithRoot();
 		
 	      System.setProperty("java.net.useSystemProxies", "true");
+	      
+	      String fileName = null;
 	   
 
 		try {
@@ -60,6 +63,11 @@ public class ReadXML {
 			URL url = new URL(urlFile);			
 			InputStream stream = url.openStream();
 			
+			fileName = url.getFile();
+			
+			System.out.println(url.getFile());
+			
+			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			
      		dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
@@ -67,6 +75,7 @@ public class ReadXML {
 
 
 			Document docIn = dBuilder.parse(stream);
+			
 
 			System.out.println("Root element :" + docIn.getDocumentElement().getNodeName());
 
@@ -91,7 +100,7 @@ public class ReadXML {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(docOut);
-		StreamResult result = new StreamResult(new File("C:\\Users\\glowackk\\git\\XMLTransform\\file.xml"));
+		StreamResult result = new StreamResult(new File(request.getServletContext().getAttribute("FILES_DIR")+File.separator+fileName));
 		
 		try {
 			transformer.transform(source, result);
@@ -100,7 +109,7 @@ public class ReadXML {
 			e.printStackTrace();
 		}
 		
-		System.out.println("File saved!");
+		System.out.println("File saved! in " + request.getServletContext().getAttribute("FILES_DIR")+File.separator+fileName);
 		
 	}
 

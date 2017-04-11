@@ -34,7 +34,7 @@ public class HelloServlet extends HttpServlet {
 		
 		String fileParam = request.getParameter("file");
         try {
-			newFile.ReadXMLnow(fileParam);
+			newFile.ReadXMLnow(fileParam, request);
 		} catch (TransformerConfigurationException | ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
